@@ -1,5 +1,6 @@
 import React from "react";
 import Register from "../Users/Register";
+import PublicPosts from "../Posts/PublicPosts";
 
 const Homepage = () => {
   return (
@@ -36,13 +37,13 @@ const Homepage = () => {
             <div className="flex flex-wrap items-center">
               <div className="w-full lg:w-1/2 mb-20 lg:mb-0">
                 <span className="inline-block py-px px-2 mb-4 text-xs leading-5 text-white bg-green-500 font-medium uppercase rounded-9xl">
-                  Header
+                  BLOGIFY
                 </span>
                 <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl leading-tight text-coolGray-900 font-bold tracking-tight">
-                  A small business is only as good as its tools.
+                  Explore the Future with Blogify
                 </h1>
                 <p className="mb-8 text-lg md:text-xl leading-7 text-coolGray-500 font-medium">
-                  Lorem ipsum dolor sit amet, consectetur adipisng.
+                  Unpacking the latest in Technology and Innovation.
                 </p>
                 <ul>
                   <li className="mb-6 flex items-center">
@@ -51,7 +52,7 @@ const Homepage = () => {
                       src="flex-ui-assets/elements/checkbox-green.svg"
                     />
                     <p className="text-lg md:text-xl leading-7 text-coolGray-500 font-medium">
-                      Lorem ipsum dolor sit amet, consectetur adipisng.
+                      Perfect for a blog focused on cutting-edge technology and trends.
                     </p>
                   </li>
                   <li className="mb-6 flex items-center">
@@ -60,7 +61,7 @@ const Homepage = () => {
                       src="flex-ui-assets/elements/checkbox-green.svg"
                     />
                     <p className="text-lg md:text-xl leading-7 text-coolGray-500 font-medium">
-                      Suspendisse mollis tincidunt
+                      Great if your blog is about sharing innovative and accessible recipes.
                     </p>
                   </li>
                   <li className="flex items-center">
@@ -80,8 +81,8 @@ const Homepage = () => {
           </div>
         </div>
       </section>
-      {/* Home posts list */}
-      {/* <HomePostsLists /> */}
+     {/* Public Posts */}
+     <PublicPosts />
     </div>
   );
 };

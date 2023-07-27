@@ -70,19 +70,19 @@ export default function PublicNavbar() {
                             <div className="flex items-center">
                                 <div className="flex-shrink-0">
                                     <Link
-                                        to={"/admin"}
+                                        to={"/add-post"}
                                         className="ml-2 relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                     >
                                         <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                                         Add New Post
                                     </Link>
                                 </div>
-                               
 
-                                  
-                                </div>
+
+
                             </div>
                         </div>
+                    </div>
 
                     <Disclosure.Panel className="md:hidden">
                         <div className="space-y-1 pt-2 pb-3">
@@ -101,7 +101,7 @@ export default function PublicNavbar() {
                                 Posts
                             </Link>
                         </div>
-                       
+
                     </Disclosure.Panel>
                 </>
             )}

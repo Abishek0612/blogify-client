@@ -3,12 +3,21 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
+import { logoutAction } from "../../redux/slices/users/usersSlices";
+import { useDispatch } from "react-redux";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function PrivateNavbar() {
+  //!dispatch
+  const dispatch = useDispatch()
+  const logoutHandler = () => {
+    dispatch(logoutAction())
+    //reload
+    window.location.reload()
+  }
   return (
     <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (
@@ -53,13 +62,13 @@ export default function PrivateNavbar() {
                   >
                     Posts
                   </Link>
-                 
+
                 </div>
               </div>
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <Link
-                    to={"/admin"}
+                    to={"/add-post"}
                     className="ml-2 relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
@@ -67,7 +76,7 @@ export default function PrivateNavbar() {
                   </Link>
                 </div>
                 <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
-                
+
 
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
@@ -93,15 +102,15 @@ export default function PrivateNavbar() {
                       <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <Menu.Item>
                           {({ active }) => (
-                            <a
-                              href="#"
+                            <Link
+                              to={"/user-profile"}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
                               )}
                             >
                               Your Profile
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                         <Menu.Item>
@@ -119,15 +128,15 @@ export default function PrivateNavbar() {
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
-                            <a
-                              href="#"
+                            <button
+                              onClick={logoutHandler}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
                               )}
                             >
                               Sign out
-                            </a>
+                            </button>
                           )}
                         </Menu.Item>
                       </Menu.Items>
@@ -182,13 +191,13 @@ export default function PrivateNavbar() {
                 </button>
               </div>
               <div className="mt-3 space-y-1">
-                <Disclosure.Button
-                  as="a"
-                  href="#"
+                <Link
+                  to={"/user-profile"}
+
                   className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
                 >
                   Your Profile
-                </Disclosure.Button>
+                </Link>
                 <Disclosure.Button
                   as="a"
                   href="#"
@@ -197,6 +206,7 @@ export default function PrivateNavbar() {
                   Settings
                 </Disclosure.Button>
                 <Disclosure.Button
+                  onClick={logoutHandler}
                   as="a"
                   href="#"
                   className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
