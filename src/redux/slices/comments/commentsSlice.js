@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { resetErrorAction, resetSuccessAction } from "../globalSlice/globalSlice";
-
+import BASE_URL from "../../../utils/baseURL";
 
 //initial state
 const INITIAL_STATE = {
@@ -26,7 +26,7 @@ export const createCommentAction = createAsyncThunk(
                 },
             };
             const { data } = await axios.put(
-                `http://localhost:9080/api/v1/comments/${payload?.postId}`,
+                `${BASE_URL}/${payload?.postId}`,
                 {
                     message: payload?.message
                 },

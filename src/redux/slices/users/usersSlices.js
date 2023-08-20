@@ -4,6 +4,8 @@ import {
   resetErrorAction,
   resetSuccessAction,
 } from "../globalSlice/globalSlice";
+import BASE_URL from "../../../utils/baseURL";
+
 
 //initial state
 
@@ -31,7 +33,7 @@ export const loginAction = createAsyncThunk(
     //make request
     try {
       const { data } = await axios.post(
-        "http://localhost:9080/api/v1/users/login",
+        `${BASE_URL}/users/login`,
         payload
       );
       //! save the user into localstorage
@@ -50,7 +52,7 @@ export const registerAction = createAsyncThunk(
     //make request
     try {
       const { data } = await axios.post(
-        "http://localhost:9080/api/v1/users/register",
+        `${BASE_URL}/users/register`,
         payload
       );
       return data;
@@ -73,7 +75,7 @@ export const userPublicProfileAction = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `http://localhost:9080/api/v1/users/public-profile/${userId}`,
+        `${BASE_URL}/users/public-profile/${userId}`,
         config
       );
       return data;
@@ -96,7 +98,7 @@ export const userPrivateProfileAction = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `http://localhost:9080/api/v1/users/profile/`,
+        `${BASE_URL}/users/profile/`,
         config
       );
       return data;
@@ -121,7 +123,7 @@ export const blockUserAction = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `http://localhost:9080/api/v1/users/block/${userId}`,
+        `${BASE_URL}/users/block/${userId}`,
         {},
         config
       );
@@ -145,7 +147,7 @@ export const unBlockUserAction = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `http://localhost:9080/api/v1/users/unblock/${userId}`,
+        `${BASE_URL}/users/unblock/${userId}`,
         {},
         config
       );
@@ -171,7 +173,7 @@ export const forgotPasswordAction = createAsyncThunk(
     //make request
     try {
       const { data } = await axios.post(
-        "http://localhost:9080/api/v1/users/forgot-password",
+        `${BASE_URL}/users/forgot-password`,
         payload
       );
       //!save the user into localstorage
@@ -191,7 +193,7 @@ export const resetPasswordAction = createAsyncThunk(
     //make request
     try {
       const { data } = await axios.post(
-        `http://localhost:9080/api/v1/users/reset-password/${resetToken}`,
+        `${BASE_URL}/users/reset-password/${resetToken}`,
         { password }
       );
       //! save the user into localstorage
@@ -202,6 +204,8 @@ export const resetPasswordAction = createAsyncThunk(
     }
   }
 );
+
+
 
 //? Users slices
 const usersSlice = createSlice({
