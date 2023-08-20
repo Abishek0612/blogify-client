@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPublicPostsAction } from "../../redux/slices/posts/postSlice";
+import { fetchPrivatePostsAction } from "../../redux/slices/posts/postSlice";
 import LoadingComponent from "../Alert/LoadingComponent";
 import ErrorMsg from "../Alert/ErrorMsg";
 import { Link } from "react-router-dom";
 
 
-const PublicPosts = () => {
+const PostList = () => {
     //! redux store    
     const dispatch = useDispatch()
 
@@ -14,7 +14,7 @@ const PublicPosts = () => {
 
     //? dispatch
     useEffect(() => {
-        dispatch(fetchPublicPostsAction());
+        dispatch(fetchPrivatePostsAction());
     }, [dispatch]);
 
     console.log(posts)
@@ -25,6 +25,12 @@ const PublicPosts = () => {
                 <section className="relative py-24 bg-white">
                     <div
                         className="absolute top-0 left-0 w-full h-full"
+                        style={{
+                            backgroundImage:
+                                'url("flex-ui-assets/elements/pattern-white.svg")',
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "left top",
+                        }}
                     />
                     <div className="container relative z-10 px-4 mx-auto">
                         <div className="md:max-w-5xl mx-auto mb-8 md:mb-16 text-center">
@@ -55,7 +61,7 @@ const PublicPosts = () => {
                                 <a className="block mb-6 overflow-hidden rounded-md" href="#">
                                   <img
                                     className="w-full"
-                                    src={post?.image}
+                                    src={post?.image} alt="post image"
                                   />
                                 </a>
                                 <div className="mb-4">
@@ -67,7 +73,7 @@ const PublicPosts = () => {
                                   </a>
                                 </div>
                                 <p className="mb-2 text-coolGray-500 font-medium">
-                                  {new Date(post?.createdAt).toDateString()}
+                                 { new Date(post?.createdAt).toDateString()}
                                 </p>
                                 <a
                                   className="inline-block mb-4 text-2xl md:text-3xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline"
@@ -108,4 +114,4 @@ const PublicPosts = () => {
                     </>
                   );
                 };
-export default PublicPosts;
+export default PostList;

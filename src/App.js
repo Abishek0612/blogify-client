@@ -1,13 +1,17 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Homepage from './components/HomePage/HomePage';
 import Login from './components/Users/Login';
-import UserProfile from './components/Users/UserProfile';
 import PublicNavbar from './components/Navbar/PublicNavbar';
 import PrivateNavbar from './components/Navbar/PrivateNavbar';
 import { useSelector } from 'react-redux';
 import ProtectedRoute from './components/AuthRoute/ProtectedRoute';
 import AddPost from './components/Posts/AddPost';
 import PostDetails from './components/Posts/PostDetails';
+import PasswordResetRequest from './components/Users/PasswordResetRequest';
+import { PasswordReset } from './components/Users/PasswordReset';
+import PostList from './components/Posts/PostList';
+import UpdatePost from './components/Posts/UpdatePost';
+import PublicUserProfile from './components/Users/PublicUserProfile';
 
 
 
@@ -28,12 +32,12 @@ function App() {
         <Route path='/' element={<Homepage />} />
         <Route path='/login' element={<Login />} />
 
-       
+
        //! Protected route
         //!Profile
-        <Route path='/user-profile' element={
+        <Route path='/user-public-profile/:userId' element={
           <ProtectedRoute >
-            <UserProfile />
+            <PublicUserProfile />
           </ProtectedRoute>} />
 
         //!Add Post
@@ -47,6 +51,27 @@ function App() {
           <ProtectedRoute >
             <PostDetails />
           </ProtectedRoute>} />
+
+        //!Update post 
+        <Route path='/posts/:postId/update' element={
+          <ProtectedRoute >
+            <UpdatePost />
+          </ProtectedRoute>} />
+
+
+            //?Post List
+        <Route path='/posts' element={
+          <ProtectedRoute >
+            <PostList />
+          </ProtectedRoute>} />
+
+
+
+//? Forgot Password request
+        <Route path='/forgot-password' element={<PasswordResetRequest />} />
+
+//! reset password
+        <Route path='/reset-password/:token' element={<PasswordReset />} />
 
       </Routes>
 
