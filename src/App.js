@@ -12,6 +12,7 @@ import { PasswordReset } from './components/Users/PasswordReset';
 import PostList from './components/Posts/PostList';
 import UpdatePost from './components/Posts/UpdatePost';
 import PublicUserProfile from './components/Users/PublicUserProfile';
+import PrivateUserProfile from './components/Users/PrivateUserProfile';
 
 
 
@@ -64,6 +65,15 @@ function App() {
           <ProtectedRoute >
             <PostList />
           </ProtectedRoute>} />
+
+
+            //?Private user profile
+        <Route path='/user-profile' element={
+          <ProtectedRoute >
+            <PrivateUserProfile />
+          </ProtectedRoute>} />
+
+
 
 
 
