@@ -4,8 +4,8 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { logoutAction } from "../../redux/slices/users/usersSlices";
-import { useDispatch } from "react-redux";
-import { FaBlog } from 'react-icons/fa'
+import { useDispatch, useSelector } from "react-redux";
+import { FaBlog } from "react-icons/fa";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -13,12 +13,16 @@ function classNames(...classes) {
 
 export default function PrivateNavbar() {
   //!dispatch
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const { profile, userAuth } = useSelector((state) => state?.users);
+
   const logoutHandler = () => {
-    dispatch(logoutAction())
+    dispatch(logoutAction());
     //reload
-    window.location.reload()
-  }
+    window.location.reload();
+  };
+
   return (
     <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (
@@ -38,7 +42,6 @@ export default function PrivateNavbar() {
                   </Disclosure.Button>
                 </div>
                 <div className="flex flex-shrink-0 items-center">
-
                   <FaBlog className="block text-green-500 h-8 w-auto lg:hidden " />
                   <FaBlog className="hidden text-green-500 h-8 w-auto lg:block" />
                 </div>
@@ -56,7 +59,6 @@ export default function PrivateNavbar() {
                   >
                     Posts
                   </Link>
-
                 </div>
               </div>
               <div className="flex items-center">
@@ -69,9 +71,8 @@ export default function PrivateNavbar() {
                     Add New Post
                   </Link>
                 </div>
+
                 <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
-
-
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
                     <div>
@@ -79,8 +80,11 @@ export default function PrivateNavbar() {
                         <span className="sr-only">Open user menu</span>
                         <img
                           className="h-8 w-8 rounded-full"
-                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt=""
+                          src={
+                            profile?.user?.profilePicture ||
+                            "https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_1280.png"
+                          }
+                          alt={profile?.user?.username}
                         />
                       </Menu.Button>
                     </div>
@@ -107,17 +111,18 @@ export default function PrivateNavbar() {
                             </Link>
                           )}
                         </Menu.Item>
+
                         <Menu.Item>
                           {({ active }) => (
-                            <a
-                              href="#"
+                            <Link
+                              to="/update-user-profile"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
                               )}
                             >
                               Settings
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                         <Menu.Item>
@@ -170,10 +175,11 @@ export default function PrivateNavbar() {
                 </div>
                 <div className="ml-3">
                   <div className="text-base font-medium text-gray-800">
-                    Tom Cook
+                    {userAuth?.userInfo?.username}
                   </div>
                   <div className="text-sm font-medium text-gray-500">
-                    tom@example.com
+                    {userAuth?.userInfo?.email}
+                    
                   </div>
                 </div>
                 <button
@@ -187,18 +193,15 @@ export default function PrivateNavbar() {
               <div className="mt-3 space-y-1">
                 <Link
                   to={"/user-profile"}
-
                   className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
                 >
                   Your Profile
                 </Link>
-                <Disclosure.Button
-                  as="a"
-                  href="#"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
-                >
-                  Settings
-                </Disclosure.Button>
+                <Link to="/update-user-profile">
+                  <Disclosure.Button className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6">
+                    Settings
+                  </Disclosure.Button>
+                </Link>
                 <Disclosure.Button
                   onClick={logoutHandler}
                   as="a"

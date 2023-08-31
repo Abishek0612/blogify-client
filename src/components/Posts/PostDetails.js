@@ -173,7 +173,7 @@ const PostDetails = () => {
                                 </h3>
 
                                 {/* Comment form */}
-                                {/* <AddComment postId={postId}  comments={post?.comment?.comments}/> */}
+                                <AddComment postId={postId}  comments={post?.comment?.comments}/>
 
                             </div>
                         </div>

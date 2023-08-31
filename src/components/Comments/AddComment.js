@@ -18,12 +18,14 @@ const AddComment = ({ postId, comments }) => {
   
   //! get comment from store
   const { success } = useSelector((state) => state?.comments);
+  
   //reload
   useEffect(() => {
     if (success) {
       window.location.reload();
     }
   }, [dispatch, success]);
+
 
   //! handle submit
   const handleSubmit = (e) => {
@@ -38,6 +40,8 @@ const AddComment = ({ postId, comments }) => {
           Comments
         </h3>
         <div className="mt-5">
+
+          
           <hr className="mt-5 border-gray-300" />
           <form className="mt-4" onSubmit={handleSubmit}>
             <div className="flex space-x-4">
@@ -84,7 +88,7 @@ const AddComment = ({ postId, comments }) => {
         </div>
       </div>
       {/* comment lists */}
-      <CommentsList comments={comments} />
+      <CommentsList comments={comments} />.
     </div>
   );
 };

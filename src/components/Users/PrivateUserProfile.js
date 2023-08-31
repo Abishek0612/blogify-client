@@ -1,50 +1,42 @@
 import { AiFillCamera } from "react-icons/ai";
-import { userPrivateProfileAction } from "../../redux/slices/users/usersSlices";
+import { ExclamationTriangleIcon } from "@heroicons/react/20/solid";
+import {
+  sendAccountVerificationEmailAction,
+  userPrivateProfileAction,
+} from "../../redux/slices/users/usersSlices";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import UserPosts from "./UserPosts";
 import Followers from "./Followers";
-
-const profile = {
-  name: "Ricardo Cooper",
-  imageUrl:
-    "https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
-  coverImageUrl:
-    "https://images.unsplash.com/photo-1444628838545-ac4016a5418a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-  about: `
-    <p>Tincidunt quam neque in cursus viverra orci, dapibus nec tristique. Nullam ut sit dolor consectetur urna, dui cras nec sed. Cursus risus congue arcu aenean posuere aliquam.</p>
-    <p>Et vivamus lorem pulvinar nascetur non. Pulvinar a sed platea rhoncus ac mauris amet. Urna, sem pretium sit pretium urna, senectus vitae. Scelerisque fermentum, cursus felis dui suspendisse velit pharetra. Augue et duis cursus maecenas eget quam lectus. Accumsan vitae nascetur pharetra rhoncus praesent dictum risus suspendisse.</p>
-  `,
-  fields: {
-    Phone: "(555) 123-4567",
-    Email: "ricardocooper@example.com",
-    Title: "Senior Front-End Developer",
-    Team: "Product Development",
-    Location: "San Francisco",
-    Sits: "Oasis, 4th floor",
-    Salary: "$145,000",
-    Birthday: "June 8, 1990",
-  },
-};
+import SuccessMsg from "../Alert/SuccessMsg";
+import { Link } from "react-router-dom";
 
 export default function PrivateUserProfile() {
-
-   //! Get data from store
-   const dispatch = useDispatch();
+  //! Get data from store
+  const dispatch = useDispatch();
 
   // get user private profile
   useEffect(() => {
     dispatch(userPrivateProfileAction());
   }, [dispatch]);
 
-  const { user, loading, error, profile } = useSelector(
+  const { user, loading, error, profile, userAuth, isEmailSent } = useSelector(
     (state) => state?.users
   );
 
-  console.log(profile)
+  console.log(profile);
+
+  //! send Account verification email handler
+  const sendAccVerificationEmailHandler = () => {
+    dispatch(sendAccountVerificationEmailAction());
+  };
 
   return (
     <>
+      {/* success msg */}
+      {isEmailSent && (
+        <SuccessMsg message="Email successfully sent, check your email" />
+      )}
       <div className="flex h-full">
         <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
           <div className="relative z-0 flex flex-1 overflow-hidden">
@@ -56,15 +48,20 @@ export default function PrivateUserProfile() {
                     <div>
                       <img
                         className="object-cover w-full h-32 lg:h-48"
-                        src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
-                        alt=""
+                        src={
+                          profile?.user?.coverImage ||
+                          "https://cdn.pixabay.com/photo/2020/02/06/15/59/forest-4824759_1280.png"
+                        }
+                        alt={profile?.user?.username}
                       />
 
                       <label
                         htmlFor="coverImageInput"
                         className="cursor-pointer"
                       >
-                        <AiFillCamera className="absolute top-0  right-0 w-6 h-6 m-4 text-gray-200" />
+                        <Link to="/upload-cover-image">
+                          <AiFillCamera className="absolute top-0  right-0 w-6 h-6 m-4 text-black-200" />
+                        </Link>
                       </label>
                     </div>
                   </div>
@@ -75,14 +72,20 @@ export default function PrivateUserProfile() {
                       <div className="relative flex items-center justify-center">
                         <img
                           className="w-24 h-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                          src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
-                          alt=""
+                          src={
+                            profile?.user?.profilePicture ||
+                            "https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_1280.png"
+                          }
+                          alt={profile?.user?.username}
                         />
+
                         <label
                           htmlFor="profileImageInput"
                           className="absolute bottom-0 right-0 cursor-pointer"
                         >
-                          <AiFillCamera className="w-6 h-6 m-1 text-gray-500" />
+                          <Link to="/upload-profile-image">
+                            <AiFillCamera className="w-6 h-6 m-1 text-black-500" />
+                          </Link>
                         </label>
                       </div>
 
@@ -92,6 +95,29 @@ export default function PrivateUserProfile() {
                             {profile?.user?.username}
                           </h1>
                         </div>
+
+                        {/* Account verification warning */}
+                        {!userAuth?.userInfo?.isVerified && (
+                          <button
+                            onClick={sendAccVerificationEmailHandler}
+                            className="rounded-md mt-6 bg-yellow-50 p-4"
+                          >
+                            <div className="flex">
+                              <div className="flex-shrink-0">
+                                <ExclamationTriangleIcon
+                                  className="h-5 w-5 text-yellow-400"
+                                  aria-hidden="true"
+                                />
+                              </div>
+                              <div className="ml-3">
+                                <h3 className="text-sm font-medium text-yellow-800">
+                                  Click here to verify your account
+                                </h3>
+                              </div>
+                            </div>
+                          </button>
+                        )}
+
                         <div className="flex flex-col mt-6 space-y-3 justify-stretch sm:flex-row sm:space-y-0 sm:space-x-4">
                           {/* Profile Views */}
                           <button
@@ -145,7 +171,7 @@ export default function PrivateUserProfile() {
                     </div>
                     <div className="flex-1 hidden min-w-0 mt-6 sm:block 2xl:hidden">
                       <h1 className="text-2xl font-bold text-gray-900 truncate">
-                        {profile.name}
+                          {profile.user?.username}
                       </h1>
                     </div>
                   </div>
@@ -161,14 +187,14 @@ export default function PrivateUserProfile() {
                     </div>
                     <div className="sm:col-span-1">
                       <dt className="text-sm font-medium text-gray-500">
-                        Date Joined: {new Date(profile?.user?.createdAt).toDateString()}
+                        Date Joined:{" "}
+                        {new Date(profile?.user?.createdAt).toDateString()}
                       </dt>
                     </div>
-                </dl>
-                  
+                  </dl>
                 </div>
                 {/* Posts Lists */}
-      <UserPosts posts={profile?.user?.posts} />
+                <UserPosts posts={profile?.user?.posts} />
 
                 {/* Followers */}
                 <Followers followers={profile?.user?.followers} />

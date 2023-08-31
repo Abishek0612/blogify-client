@@ -13,6 +13,8 @@ const INITIAL_STATE = {
   error: null,
   users: [],
   user: null,
+  isverified: false,
+  isUpdated: false,
   success: false,
   isProfileImgUploaded: false,
   isCoverImageUploaded: false,
@@ -254,7 +256,7 @@ export const resetPasswordAction = createAsyncThunk(
 
 //! upload Profile image
 export const uploadProfileImageAction = createAsyncThunk(
-  "users/upload-cover-image",
+  "users/upload-profile-image",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
       //convert the payload to formdata
@@ -311,6 +313,83 @@ export const uploadCoverImageAction = createAsyncThunk(
 );
 
 ///////
+
+//!send Account verification email
+export const sendAccountVerificationEmailAction = createAsyncThunk(
+  "users/send-account-verification-email",
+  async (userId, { rejectWithValue, getState, dispatch }) => {
+    //make request
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${BASE_URL}/users/account-verification-email`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+/////
+
+//! Verify Account Action
+export const verifyAccountAction = createAsyncThunk(
+  "users/account-verified",
+  async (verifyToken, { rejectWithValue, getState, dispatch }) => {
+    //make request
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get(
+        `${BASE_URL}/users/account-verification/${verifyToken}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+/////
+
+//! Update User profile Action
+export const updateUserProfileAction = createAsyncThunk(
+  "users/update-user-profile",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    //make request
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${BASE_URL}/users/update-profile/`,
+        payload,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+/////
 
 //? Users slices
 const usersSlice = createSlice({
@@ -439,6 +518,30 @@ const usersSlice = createSlice({
 
     /////
 
+    //////
+
+    //Update User profile (pending)
+    builder.addCase(updateUserProfileAction.pending, (state, action) => {
+      state.loading = true;
+    });
+
+    //(fulfilled)
+    builder.addCase(updateUserProfileAction.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.isUpdated = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    //(Rejected)
+    builder.addCase(updateUserProfileAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+      state.isUpdated = false;
+    });
+
+    /////
+
     //! Block user (Pending)
     builder.addCase(blockUserAction.pending, (state, action) => {
       state.loading = true;
@@ -479,27 +582,6 @@ const usersSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     });
-
-
-   // ! upload user profile image (pending)
-   builder.addCase(uploadProfileImageAction.pending, (state, action) => {
-    state.loading = true;
-  });
-
-  // (fulfilled)
-  builder.addCase(uploadProfileImageAction.fulfilled, (state, action) => {
-    state.profile = action.payload;
-    state.isProfileImgUploaded = true;
-    state.loading = false;
-    state.error = null;
-  });
-
-  // (rejected)
-  builder.addCase(uploadProfileImageAction.rejected, (state, action) => {
-    state.error = action.payload;
-    state.loading = false;
-    state.isProfileImgUploaded = false;
-  });
 
     ////
     //? Follow user Slice (pending)
@@ -543,7 +625,25 @@ const usersSlice = createSlice({
 
     /////
 
- 
+    // ! upload user profile image (pending)
+    builder.addCase(uploadProfileImageAction.pending, (state, action) => {
+      state.loading = true;
+    });
+
+    // (fulfilled)
+    builder.addCase(uploadProfileImageAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.isProfileImgUploaded = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    // (rejected)
+    builder.addCase(uploadProfileImageAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+      state.isProfileImgUploaded = false;
+    });
 
     /////
 
@@ -565,6 +665,55 @@ const usersSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
       state.isCoverImageUploaded = false;
+    });
+
+    ////
+    //!send Account verification email (pending)
+    builder.addCase(
+      sendAccountVerificationEmailAction.pending,
+      (state, action) => {
+        state.loading = true;
+      }
+    );
+
+    //! (fullfilled)
+    builder.addCase(
+      sendAccountVerificationEmailAction.fulfilled,
+      (state, action) => {
+        state.isEmailSent = true;
+        state.success = true;
+        state.loading = false;
+        state.error = null;
+      }
+    );
+
+    //!  (rejected)
+    builder.addCase(
+      sendAccountVerificationEmailAction.rejected,
+      (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      }
+    );
+
+    ////
+
+    //! Verify Account (pending)
+    builder.addCase(verifyAccountAction.pending, (state, action) => {
+      state.loading = false;
+    });
+
+    //!(fullfilled)
+    builder.addCase(verifyAccountAction.fulfilled, (state, action) => {
+      state.isverified = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    //!(rejected)
+    builder.addCase(verifyAccountAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
     });
 
     /////
