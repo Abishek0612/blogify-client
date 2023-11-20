@@ -144,7 +144,7 @@ export default function PrivateUserProfile() {
                                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                               />
                             </svg>
-                            20
+                            ({profile?.user?.profileViewers?.length})
                           </button>
 
                           {/* follow */}
@@ -164,14 +164,14 @@ export default function PrivateUserProfile() {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            Followers
+                            Followers ({profile?.user?.followers?.length})
                           </button>
                         </div>
                       </div>
                     </div>
                     <div className="flex-1 hidden min-w-0 mt-6 sm:block 2xl:hidden">
                       <h1 className="text-2xl font-bold text-gray-900 truncate">
-                          {profile.user?.username}
+                        {profile.user?.username}
                       </h1>
                     </div>
                   </div>

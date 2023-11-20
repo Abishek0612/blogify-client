@@ -33,7 +33,11 @@ export const fetchPublicPostsAction = createAsyncThunk(
 //!Fetch private posts Action
 export const fetchPrivatePostsAction = createAsyncThunk(
   "posts/fetch-private-posts",
-  async (payload, { rejectWithValue, getState, dispatch }) => {
+  async (
+    { page = 1, limit = 2, searchTerm = "", category = "" },
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    //if ther is no pagination there will be payload instead of page and limit
     //make request
     try {
       const token = getState().users?.userAuth?.userInfo?.token;
@@ -42,7 +46,10 @@ export const fetchPrivatePostsAction = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await axios.get(`${BASE_URL}/posts`, config);
+      const { data } = await axios.get(
+        `${BASE_URL}/posts?page=${page}&limit=${limit}&searchTerm=${searchTerm}&category=${category}`,
+        config
+      );
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -256,6 +263,36 @@ export const updatePostAction = createAsyncThunk(
   }
 );
 
+////
+
+//! Schedule a post
+export const schedulePostAction = createAsyncThunk(
+  "posts/schedule-post",
+  async (
+    { postId, scheduledPublish },
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    //make request
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${BASE_URL}/posts/schedule/${postId}`,
+        {
+          scheduledPublish,
+        },
+        config
+      );
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 //////////////////   Slice    ?///////////////////////////////
 ////
 //public post slice
@@ -460,6 +497,25 @@ const postSlice = createSlice({
     });
 
     ////////////////
+
+    //! Schedule post (pending state)
+    builder.addCase(schedulePostAction.pending, (state, action) => {
+      state.loading = true;
+    });
+
+    //!  (fulfilled state)
+    builder.addCase(schedulePostAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+
+    //!   (rejected state)
+    builder.addCase(schedulePostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
 
     //! Reset error action
     builder.addCase(resetErrorAction.fulfilled, (state) => {

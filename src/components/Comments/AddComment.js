@@ -7,30 +7,30 @@ const AddComment = ({ postId, comments }) => {
   const [formData, setFormData] = useState({
     message: "",
   });
-
   //dispatch
   const dispatch = useDispatch();
-  
   // ! Handle change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
   //! get comment from store
   const { success } = useSelector((state) => state?.comments);
-  
+
+  const { profile } = useSelector((state) => state?.users);
+
   //reload
   useEffect(() => {
     if (success) {
       window.location.reload();
     }
   }, [dispatch, success]);
-
-
   //! handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(createCommentAction({ ...formData, postId }));
+    setFormData({
+      message: "",
+    });
   };
 
   return (
@@ -40,17 +40,18 @@ const AddComment = ({ postId, comments }) => {
           Comments
         </h3>
         <div className="mt-5">
-
-          
           <hr className="mt-5 border-gray-300" />
           <form className="mt-4" onSubmit={handleSubmit}>
             <div className="flex space-x-4">
               <div className="flex-none">
-                <img
-                  src="https://via.placeholder.com/50"
-                  alt="avatar"
-                  className="w-12 h-12 rounded-full"
-                />
+              <img
+                          className="h-8 w-8 rounded-full"
+                          src={
+                            profile?.user?.profilePicture ||
+                            "https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_1280.png"
+                          }
+                          alt={profile?.user?.username}
+                        />
               </div>
               <div className="flex-grow">
                 <div className="border rounded-lg shadow-sm">
@@ -88,7 +89,7 @@ const AddComment = ({ postId, comments }) => {
         </div>
       </div>
       {/* comment lists */}
-      <CommentsList comments={comments} />.
+      <CommentsList comments={comments} />
     </div>
   );
 };

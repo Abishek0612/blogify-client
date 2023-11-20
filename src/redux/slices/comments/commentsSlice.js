@@ -55,6 +55,7 @@ const postSlice = createSlice({
     });
     // (fullfilled)
     builder.addCase(createCommentAction.fulfilled, (state, action) => {
+      console.log(action.payload)
       state.comment = action.payload;
       state.loading = false;
       state.error = null;

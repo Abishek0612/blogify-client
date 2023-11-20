@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
-const CommentList = ({ comments }) => {
+const CommentsList = ({ comments }) => {
+
+
+  
   return (
     <div className="flex flex-col space-y-4">
       <div className="flex space-x-4">
@@ -17,6 +20,7 @@ const CommentList = ({ comments }) => {
               <h2>No Comments</h2>
             ) : (
               comments?.map((comment) => {
+                
                 return (
                   <>
                     <div className="bg-blue-50 px-4 py-3 sm:px-6 flex justify-between items-center">
@@ -45,4 +49,4 @@ const CommentList = ({ comments }) => {
   );
 };
 
-export default CommentList;
+export default CommentsList;

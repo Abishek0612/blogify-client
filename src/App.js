@@ -17,6 +17,9 @@ import UploadProfileImage from "./components/Users/UploadProfileImage";
 import UploadCoverImage from "./components/Users/UploadCoverImage";
 import AccountVerification from "./components/Users/AccountVerification";
 import UpdateUserProfile from "./components/Users/UpdateUserProfile";
+import SchedulePost from "./components/Posts/SchedulePost";
+import Footer from "./components/Footer/Footer";
+import Register from "./components/Users/Register";
 
 function App() {
   //!Get the login user from store
@@ -33,7 +36,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
-        //! Protected route //!Profile
+        {/* //! Protected route //!Profile */}
         <Route
           path="/user-public-profile/:userId"
           element={
@@ -42,7 +45,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        //!Add Post
+        {/* //!Add Post */}
         <Route
           path="/add-post"
           element={
@@ -50,9 +53,10 @@ function App() {
               <AddPost />
             </ProtectedRoute>
           }
+        // eslint-disable-next-line react/jsx-no-comment-textnodes
         />
 
-        //?Post Details
+        {/* //?Post Details */}
         <Route
           path="/posts/:postId"
           element={
@@ -62,7 +66,7 @@ function App() {
           }
         />
 
-        //?Update Profile
+        {/* //?Update Profile */}
         <Route
           path="/update-user-profile"
           element={
@@ -72,7 +76,7 @@ function App() {
           }
         />
 
-        //!Update post
+        {/* //!Update post */}
         <Route
           path="/posts/:postId/update"
           element={
@@ -81,7 +85,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        //?Post List
+        {/* //?Post List */}
         <Route
           path="/posts"
           element={
@@ -90,7 +94,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        //?Private user profile
+        {/* //?Private user profile */}
         <Route
           path="/user-profile"
           element={
@@ -99,7 +103,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        //?Upload profile Image
+        {/* //?Upload profile Image */}
         <Route
           path="/upload-profile-image"
           element={
@@ -109,7 +113,7 @@ function App() {
           }
         />
 
-        //! Upload Cover Image
+        {/* //! Upload Cover Image */}
         <Route
           path="/upload-cover-image"
           element={
@@ -118,7 +122,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        //! Verify Account 
+        {/* //! Verify Account  */}
         <Route
           path="/verify-account/:token"
           element={
@@ -128,11 +132,26 @@ function App() {
           }
         />
 
-        //? Forgot Password request
+        {/* //? Schedule a post  */}
+        <Route
+          path="/posts/schedule/:postId"
+          element={
+            <ProtectedRoute>
+              <SchedulePost />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* //? Forgot Password request */}
         <Route path="/forgot-password" element={<PasswordResetRequest />} />
-        //! reset password
+        {/* //! reset password */}
         <Route path="/reset-password/:token" element={<PasswordReset />} />
+
       </Routes>
+
+              {/* Footer */}
+      <Footer />
+
     </BrowserRouter>
   );
 }
