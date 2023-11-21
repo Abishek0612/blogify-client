@@ -69,9 +69,9 @@ const Register = () => {
 
         {/* Display  success*/}
         {success & <SuccessMsg message="Register successfully" />}
-        <h3 className="mb-7 text-base md:text-lg text-coolGray-500 font-medium text-center">
+        {/* <h3 className="mb-7 text-base md:text-lg text-coolGray-500 font-medium text-center">
           Lorem ipsum dolor sit amet, consectetur adipisng.
-        </h3>
+        </h3> */}
         <label className="mb-4 flex flex-col w-full">
           <span className="mb-1 text-coolGray-800 font-medium">Username</span>
           <input
