@@ -47,28 +47,28 @@ const Homepage = () => {
                 </p>
                 <ul>
                   <li className="mb-6 flex items-center">
-                    <img
+                    {/* <img
                       className="mr-3"
                       src="flex-ui-assets/elements/checkbox-green.svg"
-                    />
+                    /> */}
                     <p className="text-lg md:text-xl leading-7 text-coolGray-500 font-medium">
                       Perfect for a blog focused on cutting-edge technology and trends.
                     </p>
                   </li>
                   <li className="mb-6 flex items-center">
-                    <img
+                    {/* <img
                       className="mr-3"
                       src="flex-ui-assets/elements/checkbox-green.svg"
-                    />
+                    /> */}
                     <p className="text-lg md:text-xl leading-7 text-coolGray-500 font-medium">
                       Great if your blog is about sharing innovative and accessible recipes.
                     </p>
                   </li>
                   <li className="flex items-center">
-                    <img
+                    {/* <img
                       className="mr-3"
                       src="flex-ui-assets/elements/checkbox-green.svg"
-                    />
+                    /> */}
                     <p className="text-lg md:text-xl leading-7 text-coolGray-500 font-medium">
                       Praesent varius justo vel justo pulvinar
                     </p>
