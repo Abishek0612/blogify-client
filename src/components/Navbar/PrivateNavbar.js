@@ -7,6 +7,16 @@ import { logoutAction } from "../../redux/slices/users/usersSlices";
 import { useDispatch, useSelector } from "react-redux";
 import { FaBlog } from "react-icons/fa";
 
+import { useNavigate } from "react-router-dom";
+
+const navigate = useNavigate();
+
+//! Logout Action
+const logoutHandler = () => {
+  dispatch(logoutAction()); // Dispatch the logout action
+  navigate("/"); // Redirect to the homepage or change to "/posts" for the post list page
+};
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -179,7 +189,6 @@ export default function PrivateNavbar() {
                   </div>
                   <div className="text-sm font-medium text-gray-500">
                     {userAuth?.userInfo?.email}
-                    
                   </div>
                 </div>
                 <button
