@@ -102,7 +102,7 @@ export default function PrivateUserProfile() {
                             onClick={sendAccVerificationEmailHandler}
                             className="rounded-md mt-6 bg-yellow-50 p-4"
                           >
-                            <div className="flex">
+                            {/* <div className="flex">
                               <div className="flex-shrink-0">
                                 <ExclamationTriangleIcon
                                   className="h-5 w-5 text-yellow-400"
@@ -114,7 +114,7 @@ export default function PrivateUserProfile() {
                                   Click here to verify your account
                                 </h3>
                               </div>
-                            </div>
+                            </div> */}
                           </button>
                         )}
 

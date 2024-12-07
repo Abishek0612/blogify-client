@@ -19,15 +19,12 @@ const PostList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
 
-  
-  
   const { categories } = useSelector((state) => state?.categories);
-  
-  
+
   //? dispatch
   useEffect(() => {
     dispatch(fetchPrivatePostsAction({ page, limit: 4, searchTerm, category }));
-    dispatch(fetchCategoriesAction())
+    dispatch(fetchCategoriesAction());
   }, [dispatch, page, searchTerm, category]);
 
   console.log(posts);
