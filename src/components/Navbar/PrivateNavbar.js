@@ -2,35 +2,27 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { logoutAction } from "../../redux/slices/users/usersSlices";
 import { useDispatch, useSelector } from "react-redux";
 import { FaBlog } from "react-icons/fa";
-
-import { useNavigate } from "react-router-dom";
-
-const navigate = useNavigate();
-
-//! Logout Action
-const logoutHandler = () => {
-  dispatch(logoutAction()); // Dispatch the logout action
-  navigate("/"); // Redirect to the homepage or change to "/posts" for the post list page
-};
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function PrivateNavbar() {
-  //!dispatch
+  //! Initialize navigate and dispatch
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  //! Get user profile and authentication info from Redux
   const { profile, userAuth } = useSelector((state) => state?.users);
 
+  //! Logout Handler
   const logoutHandler = () => {
-    dispatch(logoutAction());
-    //reload
-    window.location.reload();
+    dispatch(logoutAction()); // Dispatch the logout action
+    navigate("/"); // Redirect to the homepage (or use "/posts" if required)
   };
 
   return (
@@ -52,19 +44,19 @@ export default function PrivateNavbar() {
                   </Disclosure.Button>
                 </div>
                 <div className="flex flex-shrink-0 items-center">
-                  <FaBlog className="block text-green-500 h-8 w-auto lg:hidden " />
+                  <FaBlog className="block text-green-500 h-8 w-auto lg:hidden" />
                   <FaBlog className="hidden text-green-500 h-8 w-auto lg:block" />
                 </div>
                 <div className="hidden md:ml-6 md:flex md:space-x-8">
-                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
+                  {/* Navigation Links */}
                   <Link
-                    to={"/"}
+                    to="/"
                     className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
                   >
                     Home
                   </Link>
                   <Link
-                    to={"/posts"}
+                    to="/posts"
                     className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
                   >
                     Posts
@@ -74,7 +66,7 @@ export default function PrivateNavbar() {
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <Link
-                    to={"/add-post"}
+                    to="/add-post"
                     className="ml-2 relative inline-flex items-center gap-x-1.5 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
@@ -111,7 +103,7 @@ export default function PrivateNavbar() {
                         <Menu.Item>
                           {({ active }) => (
                             <Link
-                              to={"/user-profile"}
+                              to="/user-profile"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
@@ -121,7 +113,6 @@ export default function PrivateNavbar() {
                             </Link>
                           )}
                         </Menu.Item>
-
                         <Menu.Item>
                           {({ active }) => (
                             <Link
@@ -158,17 +149,16 @@ export default function PrivateNavbar() {
 
           <Disclosure.Panel className="md:hidden">
             <div className="space-y-1 pt-2 pb-3">
-              {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
               <Disclosure.Button
                 as="a"
-                href="#"
+                href="/"
                 className="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700 sm:pl-5 sm:pr-6"
               >
                 Home
               </Disclosure.Button>
               <Disclosure.Button
                 as="a"
-                href="#"
+                href="/posts"
                 className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
               >
                 Posts
@@ -179,7 +169,10 @@ export default function PrivateNavbar() {
                 <div className="flex-shrink-0">
                   <img
                     className="h-10 w-10 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    src={
+                      profile?.user?.profilePicture ||
+                      "https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_1280.png"
+                    }
                     alt=""
                   />
                 </div>
@@ -201,7 +194,7 @@ export default function PrivateNavbar() {
               </div>
               <div className="mt-3 space-y-1">
                 <Link
-                  to={"/user-profile"}
+                  to="/user-profile"
                   className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
                 >
                   Your Profile
